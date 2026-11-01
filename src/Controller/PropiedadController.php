@@ -26,8 +26,16 @@ class PropiedadController extends AbstractController
     #[Route('/propiedades/{id}', name: 'propiedad_detalle', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function detalle(int $id, PropiedadManager $propiedadManager, ClienteManager $clienteManager): Response
     {
+        try {
+            $propiedad = $propiedadManager->getPropiedad($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('propiedad_listar');
+        }
+
         return $this->render('propiedad/detalle.html.twig', [
-            'propiedad' => $propiedadManager->getPropiedad($id),
+            'propiedad' => $propiedad,
             'clientes' => $clienteManager->getClientes(),
         ]);
     }
@@ -57,11 +65,19 @@ class PropiedadController extends AbstractController
     #[Route('/propiedades/{id}/editar', name: 'propiedad_editar', methods: ['GET'])]
     public function editar(int $id, PropiedadManager $propiedadManager, ClienteManager $clienteManager): Response
     {
+        try {
+            $propiedad = $propiedadManager->getPropiedad($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('propiedad_listar');
+        }
+
         return $this->render('propiedad/lista.html.twig', [
             'propiedades' => $propiedadManager->getPropiedades(),
             'clientes' => $clienteManager->getClientes(),
             'tipos' => PropiedadManager::TIPOS,
-            'editar' => $propiedadManager->getPropiedad($id),
+            'editar' => $propiedad,
         ]);
     }
 
@@ -91,11 +107,19 @@ class PropiedadController extends AbstractController
     #[Route('/propiedades/{id}/eliminar', name: 'propiedad_confirmar_eliminar', methods: ['GET'])]
     public function confirmarEliminar(int $id, PropiedadManager $propiedadManager, ClienteManager $clienteManager): Response
     {
+        try {
+            $propiedad = $propiedadManager->getPropiedad($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('propiedad_listar');
+        }
+
         return $this->render('propiedad/lista.html.twig', [
             'propiedades' => $propiedadManager->getPropiedades(),
             'clientes' => $clienteManager->getClientes(),
             'tipos' => PropiedadManager::TIPOS,
-            'eliminar' => $propiedadManager->getPropiedad($id),
+            'eliminar' => $propiedad,
         ]);
     }
 
