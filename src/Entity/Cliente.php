@@ -60,6 +60,30 @@ class Cliente
         return $this->propiedades->isEmpty() && $this->contratos->isEmpty();
     }
 
+    // El rol no se guarda: se deduce de sus propiedades y de sus contratos vigentes
+    public function getRol(): string
+    {
+        $esPropietario = !$this->propiedades->isEmpty();
+        $esInquilino = false;
+        foreach ($this->contratos as $contrato) {
+            if ($contrato->estaVigente()) {
+                $esInquilino = true;
+            }
+        }
+
+        if ($esPropietario && $esInquilino) {
+            return 'Propietario e inquilino';
+        }
+        if ($esPropietario) {
+            return 'Propietario';
+        }
+        if ($esInquilino) {
+            return 'Inquilino';
+        }
+
+        return 'Sin operaciones';
+    }
+
     public function getId(): ?int
     {
         return $this->id;

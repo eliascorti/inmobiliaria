@@ -28,7 +28,7 @@
             <div class="tabla-contenedor">
                 <table class="tabla">
                     <thead>
-                        <tr><th>Nombre y apellido</th><th>DNI</th><th>Teléfono</th><th>Email</th><th class="derecha">Acciones</th></tr>
+                        <tr><th>Nombre y apellido</th><th>DNI</th><th>Teléfono</th><th>Email</th><th>Rol</th><th class="derecha">Acciones</th></tr>
                     </thead>
                     <tbody>
                         {% for cliente in clientes %}
@@ -37,6 +37,7 @@
                                 <td>{{ cliente.dni }}</td>
                                 <td>{{ cliente.telefono }}</td>
                                 <td>{{ cliente.email }}</td>
+                                <td class="texto-suave">{{ cliente.rol }}</td>
                                 <td class="derecha acciones">
                                     <a class="boton boton-chico" href="{{ path('cliente_editar', {id: cliente.id}) }}">Editar</a>
                                     <a class="boton boton-chico boton-peligro" href="{{ path('cliente_confirmar_eliminar', {id: cliente.id}) }}">Eliminar</a>

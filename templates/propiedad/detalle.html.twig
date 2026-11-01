@@ -44,7 +44,8 @@
                             <label for="inquilino">Inquilino</label>
                             <select id="inquilino" name="inquilino" required>
                                 <option value="">Seleccionar cliente…</option>
-                                {% for cliente in clientes %}
+                                {# El propietario no aparece como inquilino (RN-05; el Manager también lo valida) #}
+                                {% for cliente in clientes|filter(c => c != propiedad.propietario) %}
                                     <option value="{{ cliente.id }}">{{ cliente.nombreCompleto }}</option>
                                 {% endfor %}
                             </select>
