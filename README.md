@@ -56,6 +56,10 @@ public/css/      estilos
    php bin/console doctrine:fixtures:load
    ```
 
-3. Abrir `http://localhost/inmobiliaria/public`.
+3. Abrir `http://localhost/inmobiliaria/public` (o `http://inmobiliaria.test`).
+
+Usuario de prueba (lo crea `UsuarioFixtures`): `admin@inmobiliaria.com` / `admin123`.
+
+> En esta computadora MySQL de Laragon usa el puerto **3307**, porque el 3306 lo ocupa otro MySQL instalado como servicio de Windows. Ver [COMANDOS.md](COMANDOS.md).
 
 El detalle de cada comando está en [COMANDOS.md](COMANDOS.md).

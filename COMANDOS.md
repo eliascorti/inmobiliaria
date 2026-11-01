@@ -30,8 +30,17 @@ Prueba: `http://localhost/inmobiliaria/public` (o `http://inmobiliaria.test`).
 En `.env` se cambió `DATABASE_URL` por la de MySQL de Laragon (usuario `root` sin contraseña):
 
 ```
-DATABASE_URL="mysql://root:@127.0.0.1:3306/inmobiliaria?serverVersion=8.4.3&charset=utf8mb4"
+DATABASE_URL="mysql://root:@127.0.0.1:3307/inmobiliaria?serverVersion=8.4.3&charset=utf8mb4"
 ```
+
+**Puerto 3307:** en esta computadora el puerto 3306 lo ocupa otro MySQL (el servicio de Windows *MySQL80*). Por eso el MySQL de Laragon se pasó al puerto 3307, cambiando `port=3306` por `port=3307` en `C:\laragon\bin\mysql\mysql-8.4.3-winx64\my.ini` (hay una copia del original en `my.ini.bak-3306`). En una computadora sin MySQL80 se puede volver al 3306, como en el apunte de la Unidad 9.
+
+| # | Comando | Para qué | Fuente |
+|---|---|---|---|
+| 20 | `php bin/console doctrine:database:create` | Crear la base `inmobiliaria`. | Unidad 8 / 9 |
+| 21 | `php bin/console make:migration` | Generar el script SQL de las cuatro entidades (`src/Migrations/`). | Unidad 8 / 9 |
+| 22 | `php bin/console doctrine:migrations:migrate` | Crear las tablas. | Unidad 8 / 9 |
+| 23 | `php bin/console doctrine:fixtures:load` | Cargar los datos de prueba (borra los datos anteriores). | Unidad 9 |
 
 ## 4. Entidades
 
