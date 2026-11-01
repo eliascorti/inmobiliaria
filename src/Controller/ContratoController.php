@@ -43,9 +43,17 @@ class ContratoController extends AbstractController
     #[Route('/contratos/{id}/cancelar', name: 'contrato_confirmar_cancelar', methods: ['GET'])]
     public function confirmarCancelar(int $id, ContratoManager $contratoManager): Response
     {
+        try {
+            $contrato = $contratoManager->getContrato($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('contrato_listar');
+        }
+
         return $this->render('contrato/lista.html.twig', [
             'contratos' => $contratoManager->getContratos(),
-            'cancelar' => $contratoManager->getContrato($id),
+            'cancelar' => $contrato,
         ]);
     }
 
