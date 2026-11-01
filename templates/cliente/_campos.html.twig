@@ -1,0 +1,21 @@
+{# Campos del formulario de cliente: vacíos para el alta, cargados para la edición #}
+<div class="campo">
+    <label for="nombre-{{ cliente ? cliente.id : 'nuevo' }}">Nombre</label>
+    <input type="text" id="nombre-{{ cliente ? cliente.id : 'nuevo' }}" name="nombre" value="{{ cliente ? cliente.nombre }}" required>
+</div>
+<div class="campo">
+    <label for="apellido-{{ cliente ? cliente.id : 'nuevo' }}">Apellido</label>
+    <input type="text" id="apellido-{{ cliente ? cliente.id : 'nuevo' }}" name="apellido" value="{{ cliente ? cliente.apellido }}" required>
+</div>
+<div class="campo">
+    <label for="dni-{{ cliente ? cliente.id : 'nuevo' }}">DNI (solo números)</label>
+    <input type="text" id="dni-{{ cliente ? cliente.id : 'nuevo' }}" name="dni" value="{{ cliente ? cliente.dni }}" inputmode="numeric" required>
+</div>
+<div class="campo">
+    <label for="telefono-{{ cliente ? cliente.id : 'nuevo' }}">Teléfono</label>
+    <input type="tel" id="telefono-{{ cliente ? cliente.id : 'nuevo' }}" name="telefono" value="{{ cliente ? cliente.telefono }}" required>
+</div>
+<div class="campo">
+    <label for="email-{{ cliente ? cliente.id : 'nuevo' }}">Email</label>
+    <input type="email" id="email-{{ cliente ? cliente.id : 'nuevo' }}" name="email" value="{{ cliente ? cliente.email }}" required>
+</div>

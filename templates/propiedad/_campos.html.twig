@@ -1,0 +1,38 @@
+{# Campos del formulario de propiedad: vacíos para el alta, cargados para la edición #}
+{% set sufijo = propiedad ? propiedad.id : 'nueva' %}
+<div class="campo">
+    <label for="direccion-{{ sufijo }}">Dirección</label>
+    <input type="text" id="direccion-{{ sufijo }}" name="direccion" value="{{ propiedad ? propiedad.direccion }}" required>
+</div>
+<div class="campo">
+    <label for="tipo-{{ sufijo }}">Tipo</label>
+    <select id="tipo-{{ sufijo }}" name="tipo" required>
+        <option value="">Seleccionar tipo…</option>
+        {% for tipo in tipos %}
+            <option value="{{ tipo }}" {{ propiedad and propiedad.tipo == tipo ? 'selected' }}>{{ tipo }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="fila-campos">
+    <div class="campo">
+        <label for="ambientes-{{ sufijo }}">Ambientes</label>
+        <input type="number" id="ambientes-{{ sufijo }}" name="ambientes" min="1" value="{{ propiedad ? propiedad.ambientes }}" required>
+    </div>
+    <div class="campo">
+        <label for="precio-{{ sufijo }}">Precio ($)</label>
+        <input type="number" id="precio-{{ sufijo }}" name="precio" min="1" value="{{ propiedad ? propiedad.precio }}" required>
+    </div>
+</div>
+<div class="campo">
+    <label for="propietario-{{ sufijo }}">Propietario</label>
+    <select id="propietario-{{ sufijo }}" name="propietario" required>
+        <option value="">Seleccionar cliente…</option>
+        {% for cliente in clientes %}
+            <option value="{{ cliente.id }}" {{ propiedad and propiedad.propietario == cliente ? 'selected' }}>{{ cliente.nombreCompleto }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="campo">
+    <label for="imagen-{{ sufijo }}">Imagen (JPG, PNG o WEBP)</label>
+    <input type="file" id="imagen-{{ sufijo }}" name="imagen" accept="image/jpeg,image/png,image/webp" {{ propiedad ? '' : 'required' }}>
+</div>

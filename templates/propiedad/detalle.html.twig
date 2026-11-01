@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ propiedad.direccion }} · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' with {volver: path('propiedad_listar')} %}
+<main class="contenido">
+    <nav class="ruta" aria-label="Ruta">
+        <a href="{{ path('propiedad_listar') }}">Propiedades</a>
+        <span aria-hidden="true">/</span>
+        <span>{{ propiedad.direccion }}</span>
+    </nav>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-07 Consultar propiedades: detalle #}
+    <div class="detalle">
+        <div class="detalle-imagen">
+            {% if propiedad.imagen %}
+                <img src="{{ asset('uploads/propiedades/' ~ propiedad.imagen) }}" alt="Foto de {{ propiedad.direccion }}">
+            {% endif %}
+        </div>
+
+        <div class="detalle-columna">
+            <section class="tarjeta tarjeta-relleno">
+                <div class="detalle-titulo">
+                    <h1>{{ propiedad.direccion }}</h1>
+                    <span class="estado {{ propiedad.estaDisponible ? 'estado-ok' : 'estado-oscuro' }}">{{ propiedad.estado }}</span>
+                </div>
+                <dl class="datos">
+                    <div><dt>Tipo</dt><dd>{{ propiedad.tipo }}</dd></div>
+                    <div><dt>Ambientes</dt><dd>{{ propiedad.ambientes }}</dd></div>
+                    <div><dt>Precio de referencia</dt><dd>$ {{ propiedad.precio|number_format(0, ',', '.') }}</dd></div>
+                    <div><dt>Propietario</dt><dd>{{ propiedad.propietario.nombreCompleto }}</dd></div>
+                </dl>
+            </section>
+
+            {% if propiedad.estaDisponible %}
+                {# CU-11 Asignar propiedad a cliente #}
+                <section class="tarjeta tarjeta-relleno">
+                    <form action="{{ path('contrato_asignar', {id: propiedad.id}) }}" method="post" class="formulario">
+                        <h2>Asignar a cliente</h2>
+                        <div class="campo">
+                            <label for="inquilino">Inquilino</label>
+                            <select id="inquilino" name="inquilino" required>
+                                <option value="">Seleccionar cliente…</option>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.id }}">{{ cliente.nombreCompleto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="fila-campos">
+                            <div class="campo">
+                                <label for="fechaInicio">Fecha inicio</label>
+                                <input type="date" id="fechaInicio" name="fechaInicio" required>
+                            </div>
+                            <div class="campo">
+                                <label for="fechaFin">Fecha fin</label>
+                                <input type="date" id="fechaFin" name="fechaFin" required>
+                            </div>
+                        </div>
+                        <div class="campo">
+                            <label for="precioMensual">Precio mensual ($)</label>
+                            <input type="number" id="precioMensual" name="precioMensual" min="1" value="{{ propiedad.precio }}" required>
+                        </div>
+                        <p class="texto-suave">Se crea el contrato como Vigente y la propiedad pasa a Alquilada. El inquilino no puede ser el propietario.</p>
+                        <button type="submit" class="boton boton-primario">Asignar y crear contrato</button>
+                    </form>
+                </section>
+            {% else %}
+                {% set contrato = propiedad.contratoVigente %}
+                <section class="tarjeta tarjeta-relleno">
+                    <h2>Contrato vigente</h2>
+                    {% if contrato %}
+                        <dl class="datos">
+                            <div><dt>Inquilino</dt><dd>{{ contrato.inquilino.nombreCompleto }}</dd></div>
+                            <div><dt>Contrato</dt><dd>N° {{ contrato.id }}</dd></div>
+                            <div><dt>Vigencia</dt><dd>{{ contrato.fechaInicio|date('d/m/Y') }} – {{ contrato.fechaFin|date('d/m/Y') }}</dd></div>
+                            <div><dt>Precio mensual</dt><dd>$ {{ contrato.precioMensual|number_format(0, ',', '.') }}</dd></div>
+                        </dl>
+                    {% endif %}
+                    <a class="boton boton-borde" href="{{ path('contrato_listar') }}">Ver en Contratos</a>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,11 @@
+{# Encabezado de las pantallas internas. Recibe "volver" con la URL del botón Volver (opcional). #}
+<header class="encabezado">
+    <span class="marca">INMOBILIARIA</span>
+    <nav class="encabezado-nav">
+        <span class="usuario">{{ app.user.email }}</span>
+        {% if volver is defined %}
+            <a href="{{ volver }}">Volver</a>
+        {% endif %}
+        <a href="{{ path('app_logout') }}">Salir</a>
+    </nav>
+</header>

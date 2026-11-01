@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel principal · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+<main class="contenido">
+    <div class="titulo">
+        <div>
+            <h1>Panel principal</h1>
+            <p class="texto-suave">Elegí un módulo para trabajar.</p>
+        </div>
+    </div>
+
+    <section class="indicadores" aria-label="Indicadores">
+        <div class="indicador">
+            <span class="indicador-numero">{{ resumen.clientes }}</span>
+            <span class="texto-suave">Clientes registrados</span>
+        </div>
+        <div class="indicador">
+            <span class="indicador-numero">{{ resumen.disponibles }}</span>
+            <span class="texto-suave">Propiedades disponibles</span>
+        </div>
+        <div class="indicador">
+            <span class="indicador-numero">{{ resumen.vigentes }}</span>
+            <span class="texto-suave">Contratos vigentes</span>
+        </div>
+    </section>
+
+    <nav class="modulos" aria-label="Módulos">
+        <a class="modulo" href="{{ path('cliente_listar') }}">
+            <span class="modulo-titulo">Clientes</span>
+            <span class="texto-suave">Alta, edición, baja y listado de propietarios e inquilinos.</span>
+        </a>
+        <a class="modulo" href="{{ path('propiedad_listar') }}">
+            <span class="modulo-titulo">Propiedades</span>
+            <span class="texto-suave">Catálogo con imágenes, alta, edición, baja y asignación a clientes.</span>
+        </a>
+        <a class="modulo" href="{{ path('contrato_listar') }}">
+            <span class="modulo-titulo">Contratos</span>
+            <span class="texto-suave">Listado y cancelación de alquileres.</span>
+        </a>
+    </nav>
+</main>
+{% endblock %}

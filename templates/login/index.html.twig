@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingresar · Inmobiliaria{% endblock %}
+
+{% block body %}
+<div class="pagina-login">
+    <header class="encabezado">
+        <span class="marca">INMOBILIARIA</span>
+    </header>
+    <main class="login-contenedor">
+        <form class="tarjeta login-tarjeta" action="{{ path('app_login') }}" method="post">
+            <div>
+                <h1>Bienvenido</h1>
+                <p class="texto-suave">Ingresá con tu email y contraseña.</p>
+            </div>
+
+            {% if error %}
+                <div class="mensaje mensaje-error" role="alert">Email o contraseña incorrectos.</div>
+            {% endif %}
+
+            <div class="campo">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="_username" value="{{ ultimoEmail }}" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="_password" required>
+            </div>
+            <button type="submit" class="boton boton-primario">Ingresar</button>
+        </form>
+    </main>
+</div>
+{% endblock %}

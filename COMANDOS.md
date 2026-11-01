@@ -24,3 +24,33 @@ Prueba: `http://localhost/inmobiliaria/public` (o `http://inmobiliaria.test`).
 |---|---|---|
 | 8 | `git init -b main` | Crear el repositorio local. |
 | 9 | `git add .` y `git commit -m "..."` | Guardar cada avance (un commit por pantalla). |
+
+## 3. Base de datos
+
+En `.env` se cambió `DATABASE_URL` por la de MySQL de Laragon (usuario `root` sin contraseña):
+
+```
+DATABASE_URL="mysql://root:@127.0.0.1:3306/inmobiliaria?serverVersion=8.4.3&charset=utf8mb4"
+```
+
+## 4. Entidades
+
+| # | Comando | Respuestas | Fuente |
+|---|---|---|---|
+| 10 | `php bin/console make:user Usuario` | Guardar en la base: sí · identificador: `email` · contraseña con hash: sí | Unidad 9 (Seguridad) / Unidad 10 |
+| 11 | `php bin/console make:entity Usuario` | `nombre` string(100), no nulo | Unidad 10 |
+| 12 | `php bin/console make:entity Cliente` | `nombre` string(100) · `apellido` string(100) · `dni` string(20) · `telefono` string(30) · `email` string(150) — todos no nulos | Unidad 8 / 9 |
+| 13 | `php bin/console make:entity Propiedad` | `direccion` string(150) · `tipo` string(30) · `ambientes` integer · `precio` integer · `estado` string(20) · `imagen` string(255) nulo · `propietario` **ManyToOne** → `Cliente`, no nulo, acceso desde Cliente: sí (`propiedades`), orphanRemoval: no | Unidad 8 / 11 |
+| 14 | `php bin/console make:entity Contrato` | `fechaInicio` date · `fechaFin` date · `precioMensual` integer · `estado` string(20) · `propiedad` **ManyToOne** → `Propiedad` (acceso: `contratos`) · `inquilino` **ManyToOne** → `Cliente` (acceso: `contratos`) — todos no nulos | Unidad 8 / 11 |
+
+Después de `make:entity` se agregó a mano `unique: true` en el DNI de `Cliente` (RN-01) y los métodos de negocio de cada entidad (`puedeEliminarse()`, `alquilar()`, `liberar()`, `cancelar()`, etc.).
+
+## 5. Datos de prueba (fixtures)
+
+| # | Comando | Para qué | Fuente |
+|---|---|---|---|
+| 15 | `composer require --dev doctrine/doctrine-fixtures-bundle` | Instalar el bundle de fixtures. | Unidad 9 (Entidades) |
+| 16 | `php bin/console make:fixtures UsuarioFixtures` | Usuario de prueba con la contraseña hasheada. | Unidad 9 / 10 |
+| 17 | `php bin/console make:fixtures ClienteFixtures` | Seis clientes. | Unidad 9 |
+| 18 | `php bin/console make:fixtures PropiedadFixtures` | Cinco propiedades con imagen de ejemplo (depende de clientes). | Unidad 9 |
+| 19 | `php bin/console make:fixtures ContratoFixtures` | Tres contratos (depende de propiedades y clientes). | Unidad 9 |

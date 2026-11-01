@@ -4,26 +4,34 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Usuario
+                property: email
     firewalls:
         dev:
             pattern: ^/(_profiler(/|$)|(_wdt|css|images|js)/)
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+            # CU-01: login con formulario (el firewall valida email y contraseña)
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: app_panel
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            # CU-02: cierre de sesión
+            logout:
+                path: app_logout
+                target: app_login
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # RNF-01: todo el sistema, salvo el login, requiere sesión iniciada
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:

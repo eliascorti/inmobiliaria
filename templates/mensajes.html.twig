@@ -1,0 +1,7 @@
+{# Mensajes flash de éxito o error (RNF-04) #}
+{% for mensaje in app.flashes('exito') %}
+    <div class="mensaje mensaje-exito" role="status">{{ mensaje }}</div>
+{% endfor %}
+{% for mensaje in app.flashes('error') %}
+    <div class="mensaje mensaje-error" role="alert">{{ mensaje }}</div>
+{% endfor %}

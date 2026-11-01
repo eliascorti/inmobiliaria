@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Propiedades · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' with {volver: path('app_panel')} %}
+<main class="contenido">
+    <div class="titulo">
+        <div>
+            <h1>Propiedades</h1>
+            <p class="texto-suave">{{ propiedades|length }} propiedades · {{ propiedades|filter(p => p.estaDisponible)|length }} disponibles para alquilar.</p>
+        </div>
+        <button type="button" class="boton boton-primario" onclick="document.getElementById('modal-nueva').showModal()">+ Nueva propiedad</button>
+    </div>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-07 Consultar propiedades: catálogo con imágenes #}
+    {% if propiedades is empty %}
+        <p class="vacio tarjeta">Todavía no hay propiedades registradas.</p>
+    {% else %}
+        <div class="catalogo">
+            {% for propiedad in propiedades %}
+                <article class="propiedad">
+                    <div class="propiedad-imagen">
+                        {% if propiedad.imagen %}
+                            <img src="{{ asset('uploads/propiedades/' ~ propiedad.imagen) }}" alt="Foto de {{ propiedad.direccion }}">
+                        {% endif %}
+                        <span class="estado {{ propiedad.estaDisponible ? 'estado-ok' : 'estado-oscuro' }}">{{ propiedad.estado }}</span>
+                    </div>
+                    <div class="propiedad-datos">
+                        <h2>{{ propiedad.direccion }}</h2>
+                        <span class="texto-suave">{{ propiedad.tipo }} · {{ propiedad.ambientes }} amb.</span>
+                        <span class="precio">$ {{ propiedad.precio|number_format(0, ',', '.') }}</span>
+                        <span class="texto-suave">Propietario: {{ propiedad.propietario.nombreCompleto }}</span>
+                    </div>
+                    <div class="propiedad-acciones">
+                        <a class="boton boton-borde" href="{{ path('propiedad_detalle', {id: propiedad.id}) }}">Ver detalle</a>
+                        <a class="boton boton-chico" href="{{ path('propiedad_editar', {id: propiedad.id}) }}">Editar</a>
+                        <a class="boton boton-chico boton-peligro" href="{{ path('propiedad_confirmar_eliminar', {id: propiedad.id}) }}">Eliminar</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% endif %}
+</main>
+
+{# CU-08 Registrar propiedad (enctype para poder subir la imagen) #}
+<dialog id="modal-nueva" class="modal">
+    <form action="{{ path('propiedad_nueva') }}" method="post" enctype="multipart/form-data" class="formulario">
+        <h2>Nueva propiedad</h2>
+        {{ include('propiedad/_campos.html.twig', {propiedad: null}) }}
+        <p class="texto-suave">La propiedad se registra como Disponible.</p>
+        <div class="modal-botones">
+            <button type="button" class="boton" onclick="this.closest('dialog').close()">Cancelar</button>
+            <button type="submit" class="boton boton-primario">Guardar propiedad</button>
+        </div>
+    </form>
+</dialog>
+
+{# CU-09 Modificar propiedad #}
+{% if editar is defined %}
+<dialog id="modal-editar" class="modal">
+    <form action="{{ path('propiedad_modificar', {id: editar.id}) }}" method="post" enctype="multipart/form-data" class="formulario">
+        <h2>Editar propiedad</h2>
+        {{ include('propiedad/_campos.html.twig', {propiedad: editar}) }}
+        <p class="texto-suave">Si no elegís una imagen nueva, se mantiene la actual.</p>
+        <div class="modal-botones">
+            <a class="boton" href="{{ path('propiedad_listar') }}">Cancelar</a>
+            <button type="submit" class="boton boton-primario">Guardar cambios</button>
+        </div>
+    </form>
+</dialog>
+<script>document.getElementById('modal-editar').showModal();</script>
+{% endif %}
+
+{# CU-10 Eliminar propiedad #}
+{% if eliminar is defined %}
+<dialog id="modal-eliminar" class="modal">
+    <form action="{{ path('propiedad_eliminar', {id: eliminar.id}) }}" method="post" class="formulario">
+        <h2>Eliminar propiedad</h2>
+        <p>¿Seguro que querés eliminar <strong>{{ eliminar.direccion }}</strong>?</p>
+        <p class="texto-suave">No se puede eliminar una propiedad que tenga contratos asociados.</p>
+        <div class="modal-botones">
+            <a class="boton" href="{{ path('propiedad_listar') }}">No, volver</a>
+            <button type="submit" class="boton boton-peligro-lleno">Eliminar</button>
+        </div>
+    </form>
+</dialog>
+<script>document.getElementById('modal-eliminar').showModal();</script>
+{% endif %}
+{% endblock %}

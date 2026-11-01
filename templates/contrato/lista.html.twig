@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contratos · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' with {volver: path('app_panel')} %}
+<main class="contenido">
+    <div class="titulo">
+        <div>
+            <h1>Contratos</h1>
+            <p class="texto-suave">Los contratos se crean desde el detalle de una propiedad disponible.</p>
+        </div>
+        <a class="boton boton-borde" href="{{ path('propiedad_listar') }}">Ir a Propiedades</a>
+    </div>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-12 Cancelar contrato: listado (pasos 1-2) #}
+    <section class="tarjeta">
+        <div class="tarjeta-cabecera">
+            <h2>Listado</h2>
+            <span class="texto-suave">{{ contratos|length }} contratos · {{ contratos|filter(c => c.estaVigente)|length }} vigentes</span>
+        </div>
+        {% if contratos is empty %}
+            <p class="vacio">Todavía no hay contratos.</p>
+        {% else %}
+            <div class="tabla-contenedor">
+                <table class="tabla">
+                    <thead>
+                        <tr><th>N°</th><th>Propiedad</th><th>Inquilino</th><th>Vigencia</th><th>Precio</th><th>Estado</th><th class="derecha">Acción</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for contrato in contratos %}
+                            <tr>
+                                <td>{{ contrato.id }}</td>
+                                <td class="destacado">{{ contrato.propiedad.direccion }}</td>
+                                <td>{{ contrato.inquilino.nombreCompleto }}</td>
+                                <td>{{ contrato.fechaInicio|date('d/m/Y') }} – {{ contrato.fechaFin|date('d/m/Y') }}</td>
+                                <td>$ {{ contrato.precioMensual|number_format(0, ',', '.') }}</td>
+                                <td><span class="estado {{ contrato.estaVigente ? 'estado-ok' : 'estado-gris' }}">{{ contrato.estado }}</span></td>
+                                <td class="derecha">
+                                    {% if contrato.estaVigente %}
+                                        <a class="boton boton-chico boton-peligro" href="{{ path('contrato_confirmar_cancelar', {id: contrato.id}) }}">Cancelar</a>
+                                    {% else %}
+                                        <span class="texto-suave">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+</main>
+
+{# CU-12 Cancelar contrato: confirmación #}
+{% if cancelar is defined %}
+<dialog id="modal-cancelar" class="modal">
+    <form action="{{ path('contrato_cancelar', {id: cancelar.id}) }}" method="post" class="formulario">
+        <h2>Cancelar contrato N° {{ cancelar.id }}</h2>
+        <p>La propiedad <strong>{{ cancelar.propiedad.direccion }}</strong> vuelve a estar Disponible y el contrato queda como Cancelado.</p>
+        <p class="texto-suave">Un contrato cancelado no se puede reactivar.</p>
+        <div class="modal-botones">
+            <a class="boton" href="{{ path('contrato_listar') }}">No, volver</a>
+            <button type="submit" class="boton boton-peligro-lleno">Cancelar contrato</button>
+        </div>
+    </form>
+</dialog>
+<script>document.getElementById('modal-cancelar').showModal();</script>
+{% endif %}
+{% endblock %}
