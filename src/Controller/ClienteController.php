@@ -43,9 +43,17 @@ class ClienteController extends AbstractController
     #[Route('/clientes/{id}/editar', name: 'cliente_editar', methods: ['GET'])]
     public function editar(int $id, ClienteManager $clienteManager): Response
     {
+        try {
+            $cliente = $clienteManager->getCliente($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('cliente_listar');
+        }
+
         return $this->render('cliente/lista.html.twig', [
             'clientes' => $clienteManager->getClientes(),
-            'editar' => $clienteManager->getCliente($id),
+            'editar' => $cliente,
         ]);
     }
 
@@ -74,9 +82,17 @@ class ClienteController extends AbstractController
     #[Route('/clientes/{id}/eliminar', name: 'cliente_confirmar_eliminar', methods: ['GET'])]
     public function confirmarEliminar(int $id, ClienteManager $clienteManager): Response
     {
+        try {
+            $cliente = $clienteManager->getCliente($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('cliente_listar');
+        }
+
         return $this->render('cliente/lista.html.twig', [
             'clientes' => $clienteManager->getClientes(),
-            'eliminar' => $clienteManager->getCliente($id),
+            'eliminar' => $cliente,
         ]);
     }
 
