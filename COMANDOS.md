@@ -61,5 +61,17 @@ Después de `make:entity` se agregó a mano `unique: true` en el DNI de `Cliente
 | 15 | `composer require --dev doctrine/doctrine-fixtures-bundle` | Instalar el bundle de fixtures. | Unidad 9 (Entidades) |
 | 16 | `php bin/console make:fixtures UsuarioFixtures` | Usuario de prueba con la contraseña hasheada. | Unidad 9 / 10 |
 | 17 | `php bin/console make:fixtures ClienteFixtures` | Seis clientes. | Unidad 9 |
-| 18 | `php bin/console make:fixtures PropiedadFixtures` | Cinco propiedades con imagen de ejemplo (depende de clientes). | Unidad 9 |
+| 18 | `php bin/console make:fixtures PropiedadFixtures` | Seis propiedades (dos casas, dos departamentos y dos locales) con fotos de Unsplash (depende de clientes). | Unidad 9 |
 | 19 | `php bin/console make:fixtures ContratoFixtures` | Tres contratos (depende de propiedades y clientes). | Unidad 9 |
+
+## 6. Ampliación: web pública, solicitudes y modificación de contratos
+
+| # | Comando | Respuestas / para qué | Fuente |
+|---|---|---|---|
+| 24 | `php bin/console make:entity Solicitud` | Primero crea la entidad vacía. Volviendo a correrlo: `nombre` string(100) · `apellido` string(100) · `dni` string(20) · `telefono` string(30) · `email` string(150) · `fechaInicio` date · `fechaFin` date · `estado` string(20) · `propiedad` **ManyToOne** → `Propiedad`, no nulo, acceso desde Propiedad: sí (`solicitudes`), orphanRemoval: no | Unidad 8 / 11 |
+| 25 | `php bin/console make:migration` | Genera el SQL de la tabla `solicitud`. | Unidad 8 / 9 |
+| 26 | `php bin/console doctrine:migrations:migrate` | Crea la tabla. | Unidad 8 / 9 |
+| 27 | `php bin/console make:fixtures SolicitudFixtures` | Tres solicitudes de prueba (depende de contratos). | Unidad 9 |
+| 28 | `php bin/console doctrine:fixtures:load` | Vuelve a cargar todos los datos de prueba. | Unidad 9 |
+
+Después de `make:entity` se agregaron a mano las constantes de estado y los métodos `estaPendiente()`, `aprobar()` y `rechazar()` de `Solicitud`.

@@ -1,6 +1,6 @@
 # Sistema de Gestión Inmobiliaria
 
-Proyecto de **Práctica Profesionalizante I**. Sistema web interno para una inmobiliaria: gestión de clientes, propiedades (con imagen) y contratos de alquiler.
+Proyecto de **Práctica Profesionalizante I**. Sistema web para una inmobiliaria: gestión de clientes, propiedades (con imagen) y contratos de alquiler, y una web pública donde cualquier persona ve las propiedades disponibles y pide un alquiler.
 
 **Equipo:** Elías Corti · Marco Turchi · Tadeo Reinante · Joaquín Cavanna
 **Docente:** Claudio Zonta
@@ -28,6 +28,15 @@ Proyecto de **Práctica Profesionalizante I**. Sistema web interno para una inmo
 | CU-10 | Eliminar propiedad | Propiedades |
 | CU-11 | Asignar propiedad a cliente | Detalle de propiedad |
 | CU-12 | Cancelar contrato | Contratos |
+| CU-13 | Modificar contrato | Contratos |
+| CU-14 | Consultar solicitudes | Solicitudes |
+| CU-15 | Aprobar solicitud | Solicitudes |
+| CU-16 | Rechazar solicitud | Solicitudes |
+| CU-17 | Consultar propiedades disponibles | Web pública: catálogo y detalle |
+| CU-18 | Solicitar alquiler | Web pública: detalle |
+| CU-19 | Consultar estado de solicitud | Web pública: consulta |
+
+Actores: **Administrador** (CU-01 a CU-16, con sesión) y **Visitante** (CU-17 a CU-19, sin cuenta).
 
 ## Estructura
 
@@ -37,7 +46,7 @@ Es la estructura que crea Symfony, más la carpeta `src/Manager` (lógica de neg
 src/
   Controller/    reciben el pedido y llaman al Manager
   Manager/       resuelven cada caso de uso
-  Entity/        Usuario, Cliente, Propiedad, Contrato
+  Entity/        Usuario, Cliente, Propiedad, Contrato, Solicitud
   Repository/    consultas a la base
   DataFixtures/  datos de prueba
 templates/       plantillas Twig
@@ -56,7 +65,7 @@ public/css/      estilos
    php bin/console doctrine:fixtures:load
    ```
 
-3. Abrir `http://localhost/inmobiliaria/public` (o `http://inmobiliaria.test`).
+3. Abrir `http://localhost/inmobiliaria/public` (o `http://inmobiliaria.test`). La web pública está en `http://localhost/inmobiliaria/public/catalogo`.
 
 Usuario de prueba (lo crea `UsuarioFixtures`): `admin@inmobiliaria.com` / `admin123`.
 
