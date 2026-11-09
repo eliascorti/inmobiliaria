@@ -3,12 +3,13 @@
 {% block title %}Contratos · Inmobiliaria{% endblock %}
 
 {% block body %}
-{% include 'header.html.twig' with {volver: path('app_panel')} %}
+{% include 'header.html.twig' %}
 <main class="contenido">
+    <a class="volver" href="{{ path('app_panel') }}">← Volver al panel</a>
     <div class="titulo">
         <div>
             <h1>Contratos</h1>
-            <p class="texto-suave">Los contratos se crean desde el detalle de una propiedad disponible.</p>
+            <p class="texto-suave">Se crean desde el detalle de una propiedad disponible o al aprobar una solicitud.</p>
         </div>
         <a class="boton boton-borde" href="{{ path('propiedad_listar') }}">Ir a Propiedades</a>
     </div>
@@ -38,8 +39,9 @@
                                 <td>{{ contrato.fechaInicio|date('d/m/Y') }} – {{ contrato.fechaFin|date('d/m/Y') }}</td>
                                 <td>$ {{ contrato.precioMensual|number_format(0, ',', '.') }}</td>
                                 <td><span class="estado {{ contrato.estaVigente ? 'estado-ok' : 'estado-gris' }}">{{ contrato.estado }}</span></td>
-                                <td class="derecha">
+                                <td class="derecha acciones">
                                     {% if contrato.estaVigente %}
+                                        <a class="boton boton-chico" href="{{ path('contrato_editar', {id: contrato.id}) }}">Editar</a>
                                         <a class="boton boton-chico boton-peligro" href="{{ path('contrato_confirmar_cancelar', {id: contrato.id}) }}">Cancelar</a>
                                     {% else %}
                                         <span class="texto-suave">—</span>
@@ -53,6 +55,30 @@
         {% endif %}
     </section>
 </main>
+
+{# CU-13 Modificar contrato: solo la fecha de fin y el precio mensual #}
+{% if editar is defined %}
+<dialog id="modal-editar" class="modal">
+    <form action="{{ path('contrato_modificar', {id: editar.id}) }}" method="post" class="formulario">
+        <h2>Modificar contrato N° {{ editar.id }}</h2>
+        <p class="texto-suave">{{ editar.propiedad.direccion }} · {{ editar.inquilino.nombreCompleto }} · desde el {{ editar.fechaInicio|date('d/m/Y') }}</p>
+        <div class="campo">
+            <label for="fechaFin">Fecha fin</label>
+            <input type="date" id="fechaFin" name="fechaFin" value="{{ editar.fechaFin|date('Y-m-d') }}" required>
+        </div>
+        <div class="campo">
+            <label for="precioMensual">Precio mensual ($)</label>
+            <input type="number" id="precioMensual" name="precioMensual" min="1" value="{{ editar.precioMensual }}" required>
+        </div>
+        <p class="texto-suave">La propiedad y el inquilino no se cambian: para eso se cancela este contrato y se crea otro.</p>
+        <div class="modal-botones">
+            <a class="boton" href="{{ path('contrato_listar') }}">Cancelar</a>
+            <button type="submit" class="boton boton-primario">Guardar cambios</button>
+        </div>
+    </form>
+</dialog>
+<script>document.getElementById('modal-editar').showModal();</script>
+{% endif %}
 
 {# CU-12 Cancelar contrato: confirmación #}
 {% if cancelar is defined %}

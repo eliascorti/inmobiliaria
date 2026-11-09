@@ -70,4 +70,40 @@ class ContratoController extends AbstractController
 
         return $this->redirectToRoute('contrato_listar');
     }
+
+    // CU-13 Modificar contrato: abre el modal con los datos actuales
+    #[Route('/contratos/{id}/editar', name: 'contrato_editar', methods: ['GET'])]
+    public function editar(int $id, ContratoManager $contratoManager): Response
+    {
+        try {
+            $contrato = $contratoManager->getContrato($id);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('contrato_listar');
+        }
+
+        return $this->render('contrato/lista.html.twig', [
+            'contratos' => $contratoManager->getContratos(),
+            'editar' => $contrato,
+        ]);
+    }
+
+    // CU-13 Modificar contrato: guarda los cambios
+    #[Route('/contratos/{id}/editar', name: 'contrato_modificar', methods: ['POST'])]
+    public function modificar(int $id, Request $request, ContratoManager $contratoManager): Response
+    {
+        try {
+            $contratoManager->modificar(
+                $id,
+                $request->request->get('fechaFin', ''),
+                (int) $request->request->get('precioMensual'),
+            );
+            $this->addFlash('exito', 'Contrato N° ' . $id . ' modificado.');
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('contrato_listar');
+    }
 }

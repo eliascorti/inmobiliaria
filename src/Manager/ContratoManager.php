@@ -102,4 +102,33 @@ class ContratoManager
 
         return $contrato;
     }
+
+    // CU-13 Modificar contrato: solo cambian la fecha de fin y el precio mensual
+    public function modificar(int $id, string $fechaFin, int $precioMensual): Contrato
+    {
+        $contrato = $this->getContrato($id);
+
+        // RN-14: solo se modifica un contrato Vigente
+        if (!$contrato->estaVigente()) {
+            throw new \Exception('Solo se puede modificar un contrato vigente.');
+        }
+
+        // RN-06: fechas coherentes y precio mayor a cero
+        if ($fechaFin === '') {
+            throw new \Exception('Completá la fecha de fin.');
+        }
+        $fin = new \DateTime($fechaFin);
+        if ($fin <= $contrato->getFechaInicio()) {
+            throw new \Exception('La fecha de fin debe ser posterior a la de inicio.');
+        }
+        if ($precioMensual <= 0) {
+            throw new \Exception('El precio mensual debe ser mayor a cero.');
+        }
+
+        $contrato->setFechaFin($fin);
+        $contrato->setPrecioMensual($precioMensual);
+        $this->entityManager->flush();
+
+        return $contrato;
+    }
 }
