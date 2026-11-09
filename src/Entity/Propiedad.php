@@ -46,9 +46,16 @@ class Propiedad
     #[ORM\OneToMany(targetEntity: Contrato::class, mappedBy: 'propiedad')]
     private Collection $contratos;
 
+    /**
+     * @var Collection<int, Solicitud>
+     */
+    #[ORM\OneToMany(targetEntity: Solicitud::class, mappedBy: 'propiedad')]
+    private Collection $solicitudes;
+
     public function __construct()
     {
         $this->contratos = new ArrayCollection();
+        $this->solicitudes = new ArrayCollection();
     }
 
     public function estaDisponible(): bool
@@ -68,10 +75,10 @@ class Propiedad
         $this->estado = self::DISPONIBLE;
     }
 
-    // RN-09: solo se puede eliminar si no tiene contratos
+    // RN-09: solo se puede eliminar si no tiene contratos ni solicitudes
     public function puedeEliminarse(): bool
     {
-        return $this->contratos->isEmpty();
+        return $this->contratos->isEmpty() && $this->solicitudes->isEmpty();
     }
 
     public function getContratoVigente(): ?Contrato
@@ -198,6 +205,36 @@ class Propiedad
             // set the owning side to null (unless already changed)
             if ($contrato->getPropiedad() === $this) {
                 $contrato->setPropiedad(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Solicitud>
+     */
+    public function getSolicitudes(): Collection
+    {
+        return $this->solicitudes;
+    }
+
+    public function addSolicitud(Solicitud $solicitud): static
+    {
+        if (!$this->solicitudes->contains($solicitud)) {
+            $this->solicitudes->add($solicitud);
+            $solicitud->setPropiedad($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSolicitud(Solicitud $solicitud): static
+    {
+        if ($this->solicitudes->removeElement($solicitud)) {
+            // set the owning side to null (unless already changed)
+            if ($solicitud->getPropiedad() === $this) {
+                $solicitud->setPropiedad(null);
             }
         }
 
