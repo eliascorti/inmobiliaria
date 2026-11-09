@@ -17,12 +17,14 @@ class PropiedadFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         // [dirección, tipo, ambientes, precio, índice del propietario, imagen de ejemplo]
+        // Dos de cada tipo. Las fotos son de Unsplash (ver imagenes/CREDITOS.txt)
         $datos = [
-            ['Av. Pellegrini 1250', 'Departamento', 2, 350000, 0, 'pellegrini-1250.png'],
-            ['Bv. Oroño 845', 'Casa', 4, 520000, 0, 'orono-845.png'],
-            ['San Martín 2210', 'Departamento', 1, 240000, 3, 'san-martin-2210.png'],
-            ['Mitre 1530', 'Local', 1, 410000, 3, 'mitre-1530.png'],
-            ['Córdoba 3120', 'Departamento', 3, 380000, 5, 'cordoba-3120.png'],
+            ['Av. Pellegrini 1250', 'Departamento', 2, 350000, 0, 'pellegrini-1250.jpg'],
+            ['Bv. Oroño 845', 'Casa', 4, 520000, 0, 'orono-845.jpg'],
+            ['San Martín 2210', 'Departamento', 1, 240000, 3, 'san-martin-2210.jpg'],
+            ['Mitre 1530', 'Local', 1, 410000, 3, 'mitre-1530.jpg'],
+            ['Córdoba 3120', 'Casa', 3, 460000, 5, 'cordoba-3120.jpg'],
+            ['Rioja 1890', 'Local', 2, 690000, 5, 'rioja-1890.jpg'],
         ];
 
         if (!is_dir($this->directorioImagenes)) {

@@ -1,0 +1,9 @@
+Fotos de ejemplo de las propiedades. Todas son de Unsplash (https://unsplash.com),
+con la Licencia de Unsplash: uso gratuito, sin marca de agua y sin obligación de citar al autor.
+
+pellegrini-1250.jpg  https://unsplash.com/photos/4YhNRgL59Fc  (departamento vacío)
+orono-845.jpg        https://unsplash.com/photos/TiVPTYCG_3E  (casa)
+san-martin-2210.jpg  https://unsplash.com/photos/0-vZHPAbfS4  (departamento vacío)
+mitre-1530.jpg       https://unsplash.com/photos/q8fe785r5nU  (local vacío)
+cordoba-3120.jpg     https://unsplash.com/photos/178j8tJrNlc  (casa)
+rioja-1890.jpg       https://unsplash.com/photos/NADTQRbS0s4  (local vacío)
