@@ -3,14 +3,15 @@
 {% block title %}Clientes · Inmobiliaria{% endblock %}
 
 {% block body %}
-{% include 'header.html.twig' with {volver: path('app_panel')} %}
+{% include 'header.html.twig' %}
 <main class="contenido">
+    <a class="volver" href="{{ path('app_panel') }}">← Volver al panel</a>
     <div class="titulo">
         <div>
             <h1>Clientes</h1>
             <p class="texto-suave">Propietarios e inquilinos registrados.</p>
         </div>
-        {# CU-04: el modal se abre en el navegador, sin ir al servidor #}
+        {# CU-04: el modal se abre en el navegador #}
         <button type="button" class="boton boton-primario" onclick="document.getElementById('modal-nuevo').showModal()">+ Nuevo cliente</button>
     </div>
 

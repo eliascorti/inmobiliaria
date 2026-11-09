@@ -5,17 +5,18 @@
 {% block body %}
 <div class="pagina-login">
     <header class="encabezado">
-        <span class="marca">INMOBILIARIA</span>
+        {% include '_marca.html.twig' with {destino: path('publico_catalogo')} %}
     </header>
     <main class="login-contenedor">
         <form class="tarjeta login-tarjeta" action="{{ path('app_login') }}" method="post">
-            <div>
+            <div class="login-cabecera">
+                <img class="login-logo" src="{{ asset('img/logo.svg') }}" alt="Inmobiliaria" width="220" height="132">
                 <h1>Bienvenido</h1>
-                <p class="texto-suave">Ingresá con tu email y contraseña.</p>
+                <p class="texto-suave">Ingresá con tu email y contraseña de administrador.</p>
             </div>
 
             {% if error %}
-                <div class="mensaje mensaje-error" role="alert">Email o contraseña incorrectos.</div>
+                <div class="alerta alerta-error" role="alert"><span class="alerta-icono" aria-hidden="true">!</span><p>Email o contraseña incorrectos.</p></div>
             {% endif %}
 
             <div class="campo">
@@ -27,6 +28,8 @@
                 <input type="password" id="password" name="_password" required>
             </div>
             <button type="submit" class="boton boton-primario">Ingresar</button>
+            {# Enlace a la web pública (CU-17), que no necesita sesión #}
+            <p class="texto-suave centrado">¿Buscás alquilar? <a href="{{ path('publico_catalogo') }}">Ver propiedades disponibles</a></p>
         </form>
     </main>
 </div>

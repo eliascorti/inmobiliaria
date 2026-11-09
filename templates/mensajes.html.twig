@@ -1,7 +1,15 @@
-{# Mensajes flash de éxito o error (RNF-04) #}
+{# Mensajes flash de éxito o error (RNF-04). La × solo quita el aviso de la pantalla. #}
 {% for mensaje in app.flashes('exito') %}
-    <div class="mensaje mensaje-exito" role="status">{{ mensaje }}</div>
+    <div class="alerta alerta-exito" role="status">
+        <span class="alerta-icono" aria-hidden="true">✓</span>
+        <p>{{ mensaje }}</p>
+        <button type="button" class="alerta-cerrar" onclick="this.parentElement.remove()" aria-label="Cerrar aviso">×</button>
+    </div>
 {% endfor %}
 {% for mensaje in app.flashes('error') %}
-    <div class="mensaje mensaje-error" role="alert">{{ mensaje }}</div>
+    <div class="alerta alerta-error" role="alert">
+        <span class="alerta-icono" aria-hidden="true">!</span>
+        <p>{{ mensaje }}</p>
+        <button type="button" class="alerta-cerrar" onclick="this.parentElement.remove()" aria-label="Cerrar aviso">×</button>
+    </div>
 {% endfor %}

@@ -14,6 +14,8 @@
     --rojo: #b42318;
     --rojo-claro: #fbeaea;
     --rojo-borde: #e8b4ae;
+    --amarillo-claro: #fdf3d8;
+    --amarillo-texto: #7a5600;
 }
 
 * { box-sizing: border-box; }
@@ -32,22 +34,79 @@ p { margin: 0; }
 a { color: var(--negro); }
 
 .texto-suave { color: var(--texto-suave); font-size: 14px; }
+.centrado { text-align: center; }
 
-/* Encabezado */
+/* Encabezado: marca a la izquierda, menú en el medio, sesión a la derecha */
 .encabezado {
     background: var(--negro);
     color: var(--blanco);
-    height: 56px;
-    padding: 0 24px;
+    min-height: 60px;
+    padding: 8px 24px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    gap: 8px 28px;
 }
-.marca { font-weight: 700; letter-spacing: 0.08em; }
-.encabezado-nav { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-.encabezado-nav a { color: var(--blanco); text-decoration: none; font-weight: 600; }
+.marca { display: flex; align-items: center; gap: 10px; color: var(--blanco); text-decoration: none; }
+.marca-casa { width: 66px; height: 31px; display: block; }
+.marca-texto { font-size: 15px; font-weight: 500; letter-spacing: 0.32em; }
+.menu { display: flex; flex-wrap: wrap; gap: 4px; flex-grow: 1; }
+.menu a {
+    color: #c9c9c6;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+.menu a:hover { color: var(--blanco); background: #2e2e2c; }
+.menu a.activo { color: var(--negro); background: var(--blanco); }
+
+/* Número chico al lado de un texto (pendientes en el menú y en las pestañas) */
+.contador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #e6e6e3;
+    color: var(--negro);
+    font-size: 12px;
+    font-weight: 700;
+}
+.contador-aviso { background: #f2c94c; color: var(--negro); margin-left: 4px; }
+
+/* Pestañas de filtro (Pendientes / Todas) */
+.pestanas { display: flex; gap: 6px; }
+.pestanas a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    color: var(--texto-suave);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.pestanas a:hover { background: var(--fondo); color: var(--negro); }
+.pestanas a.activa { background: var(--negro); color: var(--blanco); }
+.pestanas a.activa .contador { background: var(--blanco); }
+.sesion { display: flex; align-items: center; gap: 14px; font-size: 14px; }
 .usuario { color: #c9c9c6; }
+
+/* Botón Volver: siempre arriba a la izquierda del contenido */
+.volver {
+    align-self: flex-start;
+    color: var(--texto-suave);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: -12px;
+}
+.volver:hover { color: var(--negro); text-decoration: underline; }
 
 /* Contenido */
 .contenido {
@@ -58,6 +117,7 @@ a { color: var(--negro); }
     flex-direction: column;
     gap: 24px;
 }
+.contenido-angosto { max-width: 720px; }
 .titulo {
     display: flex;
     flex-wrap: wrap;
@@ -93,11 +153,39 @@ a { color: var(--negro); }
 .boton-chico { padding: 0 14px; font-size: 14px; }
 .boton-peligro { color: var(--rojo); border-color: var(--rojo-borde); }
 .boton-peligro-lleno { background: var(--rojo); color: var(--blanco); border-color: var(--rojo); }
+.boton-claro { background: transparent; color: var(--blanco); border-color: #5a5a57; height: 36px; }
+.boton-claro:hover { border-color: var(--blanco); }
 
-/* Mensajes flash */
-.mensaje { padding: 12px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; }
-.mensaje-exito { background: var(--verde-claro); color: var(--verde-texto); border: 1px solid var(--verde-borde); }
-.mensaje-error { background: var(--rojo-claro); color: #8a1f1f; border: 1px solid #f0c4c4; }
+/* Alertas (mensajes flash): ícono, texto y botón para cerrarlas */
+.alerta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid;
+    border-left-width: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.alerta p { flex-grow: 1; }
+.alerta-icono {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blanco);
+    font-weight: 700;
+}
+.alerta-cerrar { border: none; background: none; font-size: 20px; line-height: 1; color: inherit; cursor: pointer; opacity: 0.6; }
+.alerta-cerrar:hover { opacity: 1; }
+.alerta-exito { background: var(--verde-claro); color: var(--verde-texto); border-color: var(--verde-borde); border-left-color: var(--verde); }
+.alerta-exito .alerta-icono { background: var(--verde); }
+.alerta-error { background: var(--rojo-claro); color: #8a1f1f; border-color: #f0c4c4; border-left-color: var(--rojo); }
+.alerta-error .alerta-icono { background: var(--rojo); }
 
 /* Formularios */
 .formulario { display: flex; flex-direction: column; gap: 14px; }
@@ -122,6 +210,15 @@ input[type="file"] { height: auto; padding: 8px 12px; }
 .login-contenedor { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
 .login-tarjeta { width: 100%; max-width: 380px; padding: 36px 32px; display: flex; flex-direction: column; gap: 18px; }
 .login-tarjeta h1 { font-size: 24px; margin-bottom: 6px; }
+.login-cabecera { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.login-logo { width: 220px; height: auto; margin-bottom: 4px; }
+
+/* Bienvenida de la web pública: banda verde debajo del encabezado */
+.portada-publica { background: linear-gradient(120deg, var(--verde), #145a38); color: var(--blanco); }
+.portada-publica-texto { max-width: 1200px; margin: 0 auto; padding: 44px 24px 40px; display: flex; flex-direction: column; gap: 10px; }
+.portada-publica h1 { font-size: 32px; }
+.portada-publica p { font-size: 16px; color: #dff0e6; max-width: 560px; }
+.portada-publica-dato { align-self: flex-start; margin-top: 6px; padding: 4px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.15); font-size: 13px; font-weight: 600; }
 
 /* Panel */
 .indicadores, .modulos { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -137,7 +234,7 @@ input[type="file"] { height: auto; padding: 8px 12px; }
 }
 .indicador-numero { font-size: 32px; font-weight: 700; color: var(--verde); }
 .modulo {
-    flex: 1 1 260px;
+    flex: 1 1 190px;
     min-height: 150px;
     background: var(--blanco);
     border: 1px solid var(--borde);
@@ -169,13 +266,17 @@ input[type="file"] { height: auto; padding: 8px 12px; }
 .tabla td { padding: 8px 16px; font-size: 14px; border-bottom: 1px solid #ececea; white-space: nowrap; height: 60px; }
 .destacado { font-weight: 500; }
 .derecha { text-align: right !important; }
-.acciones { display: flex; justify-content: flex-end; gap: 8px; align-items: center; }
+/* Botones de cada fila: la celda sigue siendo de tabla para que el borde de la fila no se corte */
+.acciones > * { vertical-align: middle; }
+.acciones > * + * { margin-left: 8px; }
+.acciones form { display: inline-block; }
 
 /* Estados */
 .estado { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
 .estado-ok { background: var(--verde-claro); color: var(--verde-texto); }
 .estado-oscuro { background: var(--negro); color: var(--blanco); }
 .estado-gris { background: #e6e6e3; color: #3d3d3a; }
+.estado-pendiente { background: var(--amarillo-claro); color: var(--amarillo-texto); }
 
 /* Catálogo de propiedades */
 .catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -190,8 +291,6 @@ input[type="file"] { height: auto; padding: 8px 12px; }
 .propiedad-acciones .boton-chico { flex: 1 1 0; }
 
 /* Detalle de propiedad */
-.ruta { font-size: 14px; color: var(--texto-suave); display: flex; gap: 8px; }
-.ruta a { color: var(--texto-suave); }
 .detalle { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
 .detalle-imagen { flex: 3 1 480px; min-width: 0; height: 440px; background: #e9e7e2; border-radius: 8px; overflow: hidden; }
 .detalle-imagen img { width: 100%; height: 100%; object-fit: cover; display: block; }

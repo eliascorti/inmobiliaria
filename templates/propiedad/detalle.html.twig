@@ -3,13 +3,9 @@
 {% block title %}{{ propiedad.direccion }} · Inmobiliaria{% endblock %}
 
 {% block body %}
-{% include 'header.html.twig' with {volver: path('propiedad_listar')} %}
+{% include 'header.html.twig' %}
 <main class="contenido">
-    <nav class="ruta" aria-label="Ruta">
-        <a href="{{ path('propiedad_listar') }}">Propiedades</a>
-        <span aria-hidden="true">/</span>
-        <span>{{ propiedad.direccion }}</span>
-    </nav>
+    <a class="volver" href="{{ path('propiedad_listar') }}">← Volver a Propiedades</a>
 
     {% include 'mensajes.html.twig' %}
 

@@ -1,11 +1,21 @@
-{# Encabezado de las pantallas internas. Recibe "volver" con la URL del botón Volver (opcional). #}
+{# Encabezado de las pantallas internas: marca, menú de módulos, usuario y Salir.
+   La ruta actual marca como "activo" el módulo en el que estás. #}
+{% set ruta = app.request.attributes.get('_route') %}
 <header class="encabezado">
-    <span class="marca">INMOBILIARIA</span>
-    <nav class="encabezado-nav">
-        <span class="usuario">{{ app.user.email }}</span>
-        {% if volver is defined %}
-            <a href="{{ volver }}">Volver</a>
-        {% endif %}
-        <a href="{{ path('app_logout') }}">Salir</a>
+    {% include '_marca.html.twig' with {destino: path('app_panel')} %}
+    <nav class="menu" aria-label="Módulos">
+        <a href="{{ path('app_panel') }}" class="{{ ruta == 'app_panel' ? 'activo' }}">Panel</a>
+        <a href="{{ path('cliente_listar') }}" class="{{ ruta starts with 'cliente' ? 'activo' }}">Clientes</a>
+        <a href="{{ path('propiedad_listar') }}" class="{{ ruta starts with 'propiedad' ? 'activo' }}">Propiedades</a>
+        <a href="{{ path('contrato_listar') }}" class="{{ ruta starts with 'contrato' ? 'activo' }}">Contratos</a>
+        {# solicitudManager es una variable global de Twig (config/packages/twig.yaml) #}
+        {% set pendientes = solicitudManager.contarPendientes %}
+        <a href="{{ path('solicitud_listar') }}" class="{{ ruta starts with 'solicitud' ? 'activo' }}">
+            Solicitudes{% if pendientes > 0 %} <span class="contador contador-aviso">{{ pendientes }}</span>{% endif %}
+        </a>
     </nav>
+    <div class="sesion">
+        <span class="usuario">{{ app.user.email }}</span>
+        <a class="boton boton-chico boton-claro" href="{{ path('app_logout') }}">Salir</a>
+    </div>
 </header>
