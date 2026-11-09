@@ -1,0 +1,16 @@
+{# Encabezado de la web pública (sin sesión) #}
+{% set ruta = app.request.attributes.get('_route') %}
+<header class="encabezado">
+    {% include '_marca.html.twig' with {destino: path('publico_catalogo')} %}
+    <nav class="menu" aria-label="Web pública">
+        <a href="{{ path('publico_catalogo') }}" class="{{ ruta in ['publico_catalogo', 'publico_detalle'] ? 'activo' }}">Propiedades</a>
+        <a href="{{ path('publico_estado') }}" class="{{ ruta in ['publico_estado', 'publico_consultar_estado'] ? 'activo' }}">Consultar mi solicitud</a>
+    </nav>
+    <div class="sesion">
+        {% if app.user %}
+            <a class="boton boton-chico boton-claro" href="{{ path('app_panel') }}">Ir al panel</a>
+        {% else %}
+            <a class="boton boton-chico boton-claro" href="{{ path('app_login') }}">Ingresar como administrador</a>
+        {% endif %}
+    </div>
+</header>

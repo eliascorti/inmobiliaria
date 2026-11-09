@@ -92,7 +92,8 @@ class ClienteManager
         $this->entityManager->flush();
     }
 
-    private function validarDatos(string $nombre, string $apellido, string $dni, string $telefono, string $email): void
+    // Pública porque también la usa SolicitudManager (los datos de una solicitud son los de un cliente)
+    public function validarDatos(string $nombre, string $apellido, string $dni, string $telefono, string $email): void
     {
         if ($nombre === '' || $apellido === '' || $dni === '' || $telefono === '' || $email === '') {
             throw new \Exception('Todos los campos son obligatorios.');

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-label="Inmobiliaria">
+  <!-- Logo completo: techo con chimenea y ventana, curva, nombre y dos líneas -->
+  <g fill="#1b1b1b">
+    <path d="M150 334 415 100 694 346 676 352 415 128 172 338Z"/>
+    <path d="M510 150h46v99l-46-40Z"/>
+    <rect x="380" y="215" width="31" height="31"/>
+    <rect x="417" y="215" width="31" height="31"/>
+    <rect x="380" y="252" width="31" height="31"/>
+    <rect x="417" y="252" width="31" height="31"/>
+    <path d="M128 352C300 296 540 296 690 348 540 314 300 316 128 352Z"/>
+  </g>
+  <text x="414" y="418" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="54" letter-spacing="20" fill="#1b1b1b">INMOBILIARIA</text>
+  <g stroke="#1b1b1b" stroke-width="3">
+    <line x1="115" y1="458" x2="330" y2="458"/>
+    <line x1="500" y1="458" x2="715" y2="458"/>
+  </g>
+</svg>

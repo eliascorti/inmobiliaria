@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Solicitudes · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+<main class="contenido">
+    <a class="volver" href="{{ path('app_panel') }}">← Volver al panel</a>
+    <div class="titulo">
+        <div>
+            <h1>Solicitudes</h1>
+            <p class="texto-suave">Pedidos de alquiler enviados por visitantes desde la web pública.</p>
+        </div>
+        <a class="boton boton-borde" href="{{ path('publico_catalogo') }}">Ver web pública</a>
+    </div>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-14 Consultar solicitudes. Las pestañas son enlaces GET: filtrar no cambia datos #}
+    <section class="tarjeta">
+        <div class="tarjeta-cabecera">
+            <nav class="pestanas" aria-label="Filtro de solicitudes">
+                <a href="{{ path('solicitud_listar') }}" class="{{ not todas ? 'activa' }}">Pendientes <span class="contador">{{ pendientes }}</span></a>
+                <a href="{{ path('solicitud_listar', {ver: 'todas'}) }}" class="{{ todas ? 'activa' }}">Todas</a>
+            </nav>
+            <span class="texto-suave">Las más nuevas primero</span>
+        </div>
+        {% if solicitudes is empty %}
+            <p class="vacio">{{ todas ? 'Todavía no hay solicitudes.' : 'No hay solicitudes pendientes. Las resueltas están en «Todas».' }}</p>
+        {% else %}
+            <div class="tabla-contenedor">
+                <table class="tabla">
+                    <thead>
+                        <tr><th>N°</th><th>Solicitante</th><th>Contacto</th><th>Propiedad</th><th>Fechas pedidas</th><th>Estado</th><th class="derecha">Acciones</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for solicitud in solicitudes %}
+                            <tr>
+                                <td>{{ solicitud.id }}</td>
+                                <td class="destacado">{{ solicitud.nombreCompleto }}<br><span class="texto-suave">DNI {{ solicitud.dni }}</span></td>
+                                <td>{{ solicitud.telefono }}<br><span class="texto-suave">{{ solicitud.email }}</span></td>
+                                <td>{{ solicitud.propiedad.direccion }}</td>
+                                <td>{{ solicitud.fechaInicio|date('d/m/Y') }} – {{ solicitud.fechaFin|date('d/m/Y') }}</td>
+                                <td>{{ include('solicitud/_estado.html.twig') }}</td>
+                                <td class="derecha acciones">
+                                    {% if solicitud.estaPendiente %}
+                                        {# CU-15 Aprobar solicitud: un formulario con un solo botón que hace POST #}
+                                        <form action="{{ path('solicitud_aprobar', {id: solicitud.id}) }}" method="post">
+                                            <button type="submit" class="boton boton-chico boton-primario">Aprobar</button>
+                                        </form>
+                                        <a class="boton boton-chico boton-peligro" href="{{ path('solicitud_confirmar_rechazar', {id: solicitud.id}) }}">Rechazar</a>
+                                    {% else %}
+                                        <span class="texto-suave">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+</main>
+
+{# CU-16 Rechazar solicitud: confirmación #}
+{% if rechazar is defined %}
+<dialog id="modal-rechazar" class="modal">
+    <form action="{{ path('solicitud_rechazar', {id: rechazar.id}) }}" method="post" class="formulario">
+        <h2>Rechazar solicitud N° {{ rechazar.id }}</h2>
+        <p>¿Seguro que querés rechazar el pedido de <strong>{{ rechazar.nombreCompleto }}</strong> para <strong>{{ rechazar.propiedad.direccion }}</strong>?</p>
+        <p class="texto-suave">Una solicitud rechazada no se puede volver a aprobar.</p>
+        <div class="modal-botones">
+            <a class="boton" href="{{ path('solicitud_listar') }}">No, volver</a>
+            <button type="submit" class="boton boton-peligro-lleno">Rechazar</button>
+        </div>
+    </form>
+</dialog>
+<script>document.getElementById('modal-rechazar').showModal();</script>
+{% endif %}
+{% endblock %}

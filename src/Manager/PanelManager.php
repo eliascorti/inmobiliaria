@@ -4,9 +4,11 @@ namespace App\Manager;
 
 use App\Entity\Contrato;
 use App\Entity\Propiedad;
+use App\Entity\Solicitud;
 use App\Repository\ClienteRepository;
 use App\Repository\ContratoRepository;
 use App\Repository\PropiedadRepository;
+use App\Repository\SolicitudRepository;
 
 class PanelManager
 {
@@ -14,6 +16,7 @@ class PanelManager
         private ClienteRepository $clienteRepository,
         private PropiedadRepository $propiedadRepository,
         private ContratoRepository $contratoRepository,
+        private SolicitudRepository $solicitudRepository,
     ) {
     }
 
@@ -24,6 +27,7 @@ class PanelManager
             'clientes' => $this->clienteRepository->count([]),
             'disponibles' => $this->propiedadRepository->count(['estado' => Propiedad::DISPONIBLE]),
             'vigentes' => $this->contratoRepository->count(['estado' => Contrato::VIGENTE]),
+            'pendientes' => $this->solicitudRepository->count(['estado' => Solicitud::PENDIENTE]),
         ];
     }
 }

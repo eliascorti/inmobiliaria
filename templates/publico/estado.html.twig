@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Consultar mi solicitud · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'publico/_encabezado.html.twig' %}
+<main class="contenido contenido-angosto">
+    <a class="volver" href="{{ path('publico_catalogo') }}">← Volver a las propiedades</a>
+    <div class="titulo">
+        <div>
+            <h1>Consultar mi solicitud</h1>
+            <p class="texto-suave">Ingresá el número que te dimos al enviarla y tu DNI.</p>
+        </div>
+    </div>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-19 Consultar estado de solicitud #}
+    <form action="{{ path('publico_consultar_estado') }}" method="post" class="tarjeta tarjeta-relleno formulario">
+        <div class="fila-campos">
+            <div class="campo">
+                <label for="numero">Número de solicitud</label>
+                <input type="number" id="numero" name="numero" min="1" required>
+            </div>
+            <div class="campo">
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni" inputmode="numeric" required>
+            </div>
+        </div>
+        <button type="submit" class="boton boton-primario">Consultar</button>
+    </form>
+
+    {# El resultado solo aparece cuando el Controller manda la variable "solicitud" #}
+    {% if solicitud is defined %}
+        <section class="tarjeta tarjeta-relleno">
+            <div class="detalle-titulo">
+                <h2>Solicitud N° {{ solicitud.id }}</h2>
+                {{ include('solicitud/_estado.html.twig') }}
+            </div>
+            <dl class="datos">
+                <div><dt>Propiedad</dt><dd>{{ solicitud.propiedad.direccion }}</dd></div>
+                <div><dt>Fechas pedidas</dt><dd>{{ solicitud.fechaInicio|date('d/m/Y') }} – {{ solicitud.fechaFin|date('d/m/Y') }}</dd></div>
+            </dl>
+            {% if solicitud.estado == 'Pendiente' %}
+                <p>La inmobiliaria todavía está revisando tu pedido.</p>
+            {% elseif solicitud.estado == 'Aprobada' %}
+                <p>¡Tu pedido fue aprobado! La inmobiliaria se va a comunicar con vos para firmar el contrato.</p>
+            {% else %}
+                <p>Tu pedido no fue aprobado. Podés solicitar otra propiedad disponible.</p>
+            {% endif %}
+        </section>
+    {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Propiedades en alquiler · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'publico/_encabezado.html.twig' %}
+{# Bienvenida de la web pública #}
+<section class="portada-publica">
+    <div class="portada-publica-texto">
+        <h1>Encontrá tu próximo hogar</h1>
+        <p>Elegí una propiedad, dejanos tus datos y la inmobiliaria se comunica con vos.</p>
+        <span class="portada-publica-dato">{{ propiedades|length }} propiedades disponibles</span>
+    </div>
+</section>
+<main class="contenido">
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-17 Consultar propiedades disponibles: solo las Disponibles #}
+    {% if propiedades is empty %}
+        <p class="vacio tarjeta">En este momento no hay propiedades disponibles.</p>
+    {% else %}
+        <div class="catalogo">
+            {% for propiedad in propiedades %}
+                <article class="propiedad">
+                    <div class="propiedad-imagen">
+                        {% if propiedad.imagen %}
+                            <img src="{{ asset('uploads/propiedades/' ~ propiedad.imagen) }}" alt="Foto de {{ propiedad.direccion }}">
+                        {% endif %}
+                    </div>
+                    <div class="propiedad-datos">
+                        <h2>{{ propiedad.direccion }}</h2>
+                        <span class="texto-suave">{{ propiedad.tipo }} · {{ propiedad.ambientes }} amb.</span>
+                        <span class="precio">$ {{ propiedad.precio|number_format(0, ',', '.') }} <span class="texto-suave">por mes</span></span>
+                    </div>
+                    <div class="propiedad-acciones">
+                        <a class="boton boton-primario" href="{{ path('publico_detalle', {id: propiedad.id}) }}">Ver y solicitar</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% endif %}
+</main>
+{% endblock %}

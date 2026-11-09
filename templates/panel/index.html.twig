@@ -25,6 +25,10 @@
             <span class="indicador-numero">{{ resumen.vigentes }}</span>
             <span class="texto-suave">Contratos vigentes</span>
         </div>
+        <div class="indicador">
+            <span class="indicador-numero">{{ resumen.pendientes }}</span>
+            <span class="texto-suave">Solicitudes pendientes</span>
+        </div>
     </section>
 
     <nav class="modulos" aria-label="Módulos">
@@ -38,7 +42,15 @@
         </a>
         <a class="modulo" href="{{ path('contrato_listar') }}">
             <span class="modulo-titulo">Contratos</span>
-            <span class="texto-suave">Listado y cancelación de alquileres.</span>
+            <span class="texto-suave">Listado, modificación y cancelación de alquileres.</span>
+        </a>
+        <a class="modulo" href="{{ path('solicitud_listar') }}">
+            <span class="modulo-titulo">Solicitudes</span>
+            <span class="texto-suave">Pedidos de alquiler que llegan desde la web pública: aprobar o rechazar.</span>
+        </a>
+        <a class="modulo" href="{{ path('publico_catalogo') }}">
+            <span class="modulo-titulo">Web pública</span>
+            <span class="texto-suave">Lo que ve un visitante: propiedades disponibles y solicitud de alquiler.</span>
         </a>
     </nav>
 </main>

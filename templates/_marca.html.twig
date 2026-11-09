@@ -1,0 +1,17 @@
+{# Logo y nombre del sistema. Recibe "destino": a dónde lleva al hacer clic.
+   La casa va dentro del HTML (no como imagen) para que tome el color del texto
+   (fill="currentColor"): blanca sobre el encabezado oscuro. #}
+<a class="marca" href="{{ destino }}">
+    <svg class="marca-casa" viewBox="120 90 590 275" aria-hidden="true">
+        <g fill="currentColor">
+            <path d="M150 334 415 100 694 346 676 352 415 128 172 338Z"/>
+            <path d="M510 150h46v99l-46-40Z"/>
+            <rect x="380" y="215" width="31" height="31"/>
+            <rect x="417" y="215" width="31" height="31"/>
+            <rect x="380" y="252" width="31" height="31"/>
+            <rect x="417" y="252" width="31" height="31"/>
+            <path d="M128 352C300 296 540 296 690 348 540 314 300 316 128 352Z"/>
+        </g>
+    </svg>
+    <span class="marca-texto">INMOBILIARIA</span>
+</a>

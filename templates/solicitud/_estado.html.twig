@@ -1,0 +1,3 @@
+{# Etiqueta de color según el estado de la solicitud (la usan el listado y la web pública) #}
+{% set colores = {Pendiente: 'estado-pendiente', Aprobada: 'estado-ok', Rechazada: 'estado-gris'} %}
+<span class="estado {{ colores[solicitud.estado] }}">{{ solicitud.estado }}</span>

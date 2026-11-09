@@ -3,8 +3,9 @@
 {% block title %}Propiedades · Inmobiliaria{% endblock %}
 
 {% block body %}
-{% include 'header.html.twig' with {volver: path('app_panel')} %}
+{% include 'header.html.twig' %}
 <main class="contenido">
+    <a class="volver" href="{{ path('app_panel') }}">← Volver al panel</a>
     <div class="titulo">
         <div>
             <h1>Propiedades</h1>
@@ -80,7 +81,7 @@
     <form action="{{ path('propiedad_eliminar', {id: eliminar.id}) }}" method="post" class="formulario">
         <h2>Eliminar propiedad</h2>
         <p>¿Seguro que querés eliminar <strong>{{ eliminar.direccion }}</strong>?</p>
-        <p class="texto-suave">No se puede eliminar una propiedad que tenga contratos asociados.</p>
+        <p class="texto-suave">No se puede eliminar una propiedad que tenga contratos o solicitudes asociados.</p>
         <div class="modal-botones">
             <a class="boton" href="{{ path('propiedad_listar') }}">No, volver</a>
             <button type="submit" class="boton boton-peligro-lleno">Eliminar</button>

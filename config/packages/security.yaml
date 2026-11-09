@@ -28,9 +28,11 @@ security:
                 path: app_logout
                 target: app_login
 
-    # RNF-01: todo el sistema, salvo el login, requiere sesión iniciada
+    # RNF-01: todo el sistema, salvo el login y la web pública, requiere sesión iniciada.
+    # Se lee de arriba hacia abajo: gana la primera regla que coincide con la dirección.
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/catalogo, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 
 when@test:

@@ -1,5 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
+    # Variable disponible en todas las plantillas: el encabezado la usa
+    # para mostrar cuántas solicitudes pendientes hay
+    globals:
+        solicitudManager: '@App\Manager\SolicitudManager'
 
 when@test:
     twig:

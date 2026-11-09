@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ propiedad.direccion }} · Inmobiliaria{% endblock %}
+
+{% block body %}
+{% include 'publico/_encabezado.html.twig' %}
+<main class="contenido">
+    <a class="volver" href="{{ path('publico_catalogo') }}">← Volver a las propiedades</a>
+
+    {% include 'mensajes.html.twig' %}
+
+    {# CU-17 Consultar propiedades disponibles: detalle #}
+    <div class="detalle">
+        <div class="detalle-imagen">
+            {% if propiedad.imagen %}
+                <img src="{{ asset('uploads/propiedades/' ~ propiedad.imagen) }}" alt="Foto de {{ propiedad.direccion }}">
+            {% endif %}
+        </div>
+
+        <div class="detalle-columna">
+            <section class="tarjeta tarjeta-relleno">
+                <h1>{{ propiedad.direccion }}</h1>
+                <dl class="datos">
+                    <div><dt>Tipo</dt><dd>{{ propiedad.tipo }}</dd></div>
+                    <div><dt>Ambientes</dt><dd>{{ propiedad.ambientes }}</dd></div>
+                    <div><dt>Precio mensual</dt><dd>$ {{ propiedad.precio|number_format(0, ',', '.') }}</dd></div>
+                </dl>
+            </section>
+
+            {# CU-18 Solicitar alquiler: los campos personales son los mismos que los de un cliente #}
+            <section class="tarjeta tarjeta-relleno">
+                <form action="{{ path('publico_solicitar', {id: propiedad.id}) }}" method="post" class="formulario">
+                    <div>
+                        <h2>Quiero alquilarla</h2>
+                        <p class="texto-suave">Dejanos tus datos. La inmobiliaria revisa el pedido y te contacta.</p>
+                    </div>
+                    {{ include('cliente/_campos.html.twig', {cliente: null}) }}
+                    <div class="fila-campos">
+                        <div class="campo">
+                            <label for="fechaInicio">Desde</label>
+                            <input type="date" id="fechaInicio" name="fechaInicio" required>
+                        </div>
+                        <div class="campo">
+                            <label for="fechaFin">Hasta</label>
+                            <input type="date" id="fechaFin" name="fechaFin" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="boton boton-primario">Enviar solicitud</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}

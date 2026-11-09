@@ -36,6 +36,22 @@ class PropiedadManager
         return $propiedad;
     }
 
+    // CU-17 Consultar propiedades disponibles (web pública): solo las Disponibles
+    public function getPropiedadesDisponibles(): array
+    {
+        return $this->propiedadRepository->findBy(['estado' => Propiedad::DISPONIBLE], ['direccion' => 'ASC']);
+    }
+
+    public function getPropiedadDisponible(int $id): Propiedad
+    {
+        $propiedad = $this->propiedadRepository->find($id);
+        if (!$propiedad || !$propiedad->estaDisponible()) {
+            throw new \Exception('La propiedad no está disponible.');
+        }
+
+        return $propiedad;
+    }
+
     // CU-08 Registrar propiedad
     public function registrar(string $direccion, string $tipo, int $ambientes, int $precio, int $propietarioId, ?UploadedFile $imagen): Propiedad
     {
@@ -99,9 +115,9 @@ class PropiedadManager
     {
         $propiedad = $this->getPropiedad($id);
 
-        // RN-09: no se puede eliminar si tiene contratos
+        // RN-09: no se puede eliminar si tiene contratos o solicitudes
         if (!$propiedad->puedeEliminarse()) {
-            throw new \Exception('No se puede eliminar ' . $propiedad->getDireccion() . ': tiene contratos asociados.');
+            throw new \Exception('No se puede eliminar ' . $propiedad->getDireccion() . ': tiene contratos o solicitudes asociados.');
         }
 
         $this->borrarImagen($propiedad->getImagen());

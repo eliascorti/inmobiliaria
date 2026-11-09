@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 90 590 275" role="img" aria-label="Inmobiliaria">
+  <!-- Solo la casa del logo: se usa como ícono de la pestaña del navegador -->
+  <g fill="#1b1b1b">
+    <path d="M150 334 415 100 694 346 676 352 415 128 172 338Z"/>
+    <path d="M510 150h46v99l-46-40Z"/>
+    <rect x="380" y="215" width="31" height="31"/>
+    <rect x="417" y="215" width="31" height="31"/>
+    <rect x="380" y="252" width="31" height="31"/>
+    <rect x="417" y="252" width="31" height="31"/>
+    <path d="M128 352C300 296 540 296 690 348 540 314 300 316 128 352Z"/>
+  </g>
+</svg>
